@@ -110,20 +110,20 @@ _Note for C4 wardens: Anything included in this `Automated Findings / Publicly K
 
 ```
 - If you have a public code repo, please share it here:  
-- How many contracts are in scope?:   
-- Total SLoC for these contracts?:  
-- How many external imports are there?:  
-- How many separate interfaces and struct definitions are there for the contracts within scope?:  
-- Does most of your code generally use composition or inheritance?:   
-- How many external calls?:   
-- What is the overall line coverage percentage provided by your tests?:
-- Is this an upgrade of an existing system?:
-- Check all that apply (e.g. timelock, NFT, AMM, ERC20, rollups, etc.): 
-- Is there a need to understand a separate part of the codebase / get context in order to audit this part of the protocol?:   
+- How many contracts are in scope?: 21   
+- Total SLoC for these contracts?: 3800  
+- How many external imports are there?: 20  
+- How many separate interfaces and struct definitions are there for the contracts within scope?: 10  
+- Does most of your code generally use composition or inheritance?: Inheritance   
+- How many external calls?: 2   
+- What is the overall line coverage percentage provided by your tests?: 99%
+- Is this an upgrade of an existing system?: False
+- Check all that apply (e.g. timelock, NFT, AMM, ERC20, rollups, etc.): Timelock function, ERC-20 Token
+- Is there a need to understand a separate part of the codebase / get context in order to audit this part of the protocol?: False   
 - Please describe required context:   
-- Does it use an oracle?:  
-- Describe any novel or unique curve logic or mathematical models your code uses: 
-- Is this either a fork of or an alternate implementation of another project?:   
+- Does it use an oracle?: No
+- Describe any novel or unique curve logic or mathematical models your code uses: No complex math, but there is a gauge system and a dutch auction mechanism for liquidations 
+- Is this either a fork of or an alternate implementation of another project?: False  
 - Does it use a side-chain?:
 - Describe any specific areas you would like addressed:
 ```
