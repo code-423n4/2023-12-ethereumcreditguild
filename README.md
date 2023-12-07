@@ -1,6 +1,4 @@
-### Contest Details
-
-#### Ethereum Credit Guild audit details
+# Ethereum Credit Guild audit details
 - Total Prize Pool: $90,500 USDC
   - HM awards: $61,875 USDC
   - Analysis awards: $3,750 USDC
