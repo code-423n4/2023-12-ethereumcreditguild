@@ -1,0 +1,22 @@
+[profile.default]
+fs_permissions = [{ access = "read-write", path = "./protocol-configuration"}]
+
+# compilation
+optimizer = true
+optimizer_runs = 200
+
+# paths
+src = 'src'
+test = 'test'
+script = 'script'
+
+# contracts in libs are excluded from code coverage reports
+libs = ['node_modules', 'script', 'src/external']
+
+[fuzz]
+runs = 5000
+max_test_rejects = 1000000
+
+[invariant]
+runs = 1000
+depth = 100

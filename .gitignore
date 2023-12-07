@@ -103,3 +103,27 @@ dist
 
 # TernJS port file
 .tern-port
+
+
+.eslintcache
+.env
+node_modules
+*.DS_Store*
+.vscode/
+build/
+coverage.json
+coverage/
+tenderly.yaml
+artifacts
+cache
+types/contracts
+.eslintcache
+.xml
+yarn.lock
+package-lock.json
+todo
+out/
+docs/
+lcov.info
+broadcast
+.certora_internal/
