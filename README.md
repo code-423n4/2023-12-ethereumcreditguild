@@ -1,3 +1,38 @@
+### Contest Details
+
+#### Ethereum Credit Guild audit details
+- Total Prize Pool: $90,500 USDC
+  - HM awards: $61,875 USDC
+  - Analysis awards: $3,750 USDC
+  - QA awards: $1,875 USDC
+  - Bot Race awards: $5,625 USDC
+  - Gas awards: $1,875 USDC
+  - Judge awards: $9,000 USDC
+  - Lookout awards: $6,000 USDC
+  - Scout awards: $500 USD
+- Join [C4 Discord](https://discord.gg/code4rena) to register
+- Submit findings [using the C4 form](https://code4rena.com/contests/2023-12-ethereumcreditguild/submit)
+- [Read our guidelines for more details](https://docs.code4rena.com/roles/wardens)
+- Starts December 11, 2023 20:00 UTC
+- Ends December 28, 2023 20:00 UTC
+
+#### Automated Findings / Publicly Known Issues
+
+The 4naly3er report can be found [here](https://github.com/code-423n4/2023-12-ethereumcreditguild/blob/main/4naly3er-report.md).
+
+Automated findings output for the audit can be found [here](https://github.com/code-423n4/2023-12-ethereumcreditguild/blob/main/bot-report.md) within 24 hours of audit opening.
+
+_Note for C4 wardens: Anything included in this `Automated Findings / Publicly Known Issues` section is considered a publicly known issue and is ineligible for awards._
+
+Known issues :
+- Accounting is "pessimistic", which is at odd with how lending protocols usually work. Interest is distributed to lenders only after it is paid by borrowers.
+- Some contracts do not follow CEI. This is because they only do calls to other immutable protocol contracts, and the only "interactions" considered to have to happen after state updates are interactions to untrusted external contracts (like collateral tokens).
+- A quorum of `GUILD` or `gUSDC` can block all governance actions except lending term offboarding. This is expected and the protocol would rather bias towards immutability and the ability to safely wind down than require large governance votes for everything. Forks are expected in case of strong cohort disagreements.
+- In profit distribution, savings rate can receive rewards even if the split is 0%, because of rounding down.
+- Collateral tokens can remain unclaimable by anyone (only by `GOVERNOR` role) and stay on lending terms if loans are forgiven
+- Rate limited `gUSDC` minter does not take `creditMultiplier` into account for buffer size & replenish rate
+- If there are no rebasing users, distribution of profits on `gUSDC.distribute()` are burnt. The deployer address is expected to mint `100e18` `gUSDC` before anyone interacts with the protocol, which also prevents share price manipulation.
+
 # Ethereum Credit Guild
 
 > ECG version 1
@@ -50,40 +85,6 @@ We hope to see a diversity of markets applying the same core principles as this 
 
 ## 2023-12 code4rena contest
 
-### Contest Details
-
-#### Ethereum Credit Guild audit details
-- Total Prize Pool: $90,500 USDC
-  - HM awards: $61,875 USDC
-  - Analysis awards: $3,750 USDC
-  - QA awards: $1,875 USDC
-  - Bot Race awards: $5,625 USDC
-  - Gas awards: $1,875 USDC
-  - Judge awards: $9,000 USDC
-  - Lookout awards: $6,000 USDC
-  - Scout awards: $500 USD
-- Join [C4 Discord](https://discord.gg/code4rena) to register
-- Submit findings [using the C4 form](https://code4rena.com/contests/2023-12-ethereumcreditguild/submit)
-- [Read our guidelines for more details](https://docs.code4rena.com/roles/wardens)
-- Starts December 11, 2023 20:00 UTC
-- Ends December 28, 2023 20:00 UTC
-
-#### Automated Findings / Publicly Known Issues
-
-The 4naly3er report can be found [here](https://github.com/code-423n4/2023-12-ethereumcreditguild/blob/main/4naly3er-report.md).
-
-Automated findings output for the audit can be found [here](https://github.com/code-423n4/2023-12-ethereumcreditguild/blob/main/bot-report.md) within 24 hours of audit opening.
-
-_Note for C4 wardens: Anything included in this `Automated Findings / Publicly Known Issues` section is considered a publicly known issue and is ineligible for awards._
-
-Known issues :
-- Accounting is "pessimistic", which is at odd with how lending protocols usually work. Interest is distributed to lenders only after it is paid by borrowers.
-- Some contracts do not follow CEI. This is because they only do calls to other immutable protocol contracts, and the only "interactions" considered to have to happen after state updates are interactions to untrusted external contracts (like collateral tokens).
-- A quorum of `GUILD` or `gUSDC` can block all governance actions except lending term offboarding. This is expected and the protocol would rather bias towards immutability and the ability to safely wind down than require large governance votes for everything. Forks are expected in case of strong cohort disagreements.
-- In profit distribution, savings rate can receive rewards even if the split is 0%, because of rounding down.
-- Collateral tokens can remain unclaimable by anyone (only by `GOVERNOR` role) and stay on lending terms if loans are forgiven
-- Rate limited `gUSDC` minter does not take `creditMultiplier` into account for buffer size & replenish rate
-- If there are no rebasing users, distribution of profits on `gUSDC.distribute()` are burnt. The deployer address is expected to mint `100e18` `gUSDC` before anyone interacts with the protocol, which also prevents share price manipulation.
 
 ### Scope
 
@@ -308,3 +309,25 @@ The first market for USDC will be launched under a guarded beta with a low debt 
 During the guarded beta, governance will retain emergency powers intended to respond against any unintended system behavior or vulnerability. After the beta period, governance powers will be burnt and no further arbitrary code changes possible. Instead, the system is build around explicitly defined processes such as the onboarding and offboarding of lending terms, or adjusting system parameters such as the surplus buffer fee. 
 
 We recognize that setting loan terms is a more specialized activity than saving, or choosing which yield bearing asset to hold. The protocol attempts to strike a balance through an optimistic governance model, where a relatively small quorum of `GUILD` is empowered to take system actions, but this is also vetoable. This means that outsiders have a reasonably low hurdle to making their voice heard (ie, getting just one or two major delegates to support their proposal) while large stakeholders can ensure malicious proposals do not pass. In the event of sufficient disagreement, the system should bias towards safety and stasis, and disgruntled parties who wish for change can exit. Forking is not just expected, but encouraged.
+
+## Scoping Details 
+
+```
+- If you have a public code repo, please share it here:  
+- How many contracts are in scope?: 21   
+- Total SLoC for these contracts?: 3800  
+- How many external imports are there?: 20  
+- How many separate interfaces and struct definitions are there for the contracts within scope?: 10  
+- Does most of your code generally use composition or inheritance?: Inheritance   
+- How many external calls?: 2   
+- What is the overall line coverage percentage provided by your tests?: 99%
+- Is this an upgrade of an existing system?: False
+- Check all that apply (e.g. timelock, NFT, AMM, ERC20, rollups, etc.): Timelock function, ERC-20 Token
+- Is there a need to understand a separate part of the codebase / get context in order to audit this part of the protocol?: False   
+- Please describe required context:   
+- Does it use an oracle?: No
+- Describe any novel or unique curve logic or mathematical models your code uses: No complex math, but there is a gauge system and a dutch auction mechanism for liquidations 
+- Is this either a fork of or an alternate implementation of another project?: False  
+- Does it use a side-chain?:
+- Describe any specific areas you would like addressed:
+```
