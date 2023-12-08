@@ -1,10 +1,9 @@
 # Ethereum Credit Guild audit details
 - Total Prize Pool: $90,500 USDC
-  - HM awards: $61,875 USDC
+  - HM awards: $63,750 USDC
   - Analysis awards: $3,750 USDC
   - QA awards: $1,875 USDC
   - Bot Race awards: $5,625 USDC
-  - Gas awards: $1,875 USDC
   - Judge awards: $9,000 USDC
   - Lookout awards: $6,000 USDC
   - Scout awards: $500 USD
