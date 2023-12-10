@@ -44,12 +44,11 @@ The Ethereum Credit Guild seeks to strike a new middle ground between honest-maj
 
 We hope to see a diversity of markets applying the same core principles as this the v1 market described in this document, as well as continued development of the core technology, especially in regards to scaling.
 
+- [Ethereum Credit Guild audit details](#ethereum-credit-guild-audit-details)
+      - [Automated Findings / Publicly Known Issues](#automated-findings--publicly-known-issues)
 - [Ethereum Credit Guild](#ethereum-credit-guild)
   - [Links](#links)
   - [2023-12 code4rena contest](#2023-12-code4rena-contest)
-    - [Contest Details](#contest-details)
-      - [Ethereum Credit Guild audit details](#ethereum-credit-guild-audit-details)
-      - [Automated Findings / Publicly Known Issues](#automated-findings--publicly-known-issues)
     - [Scope](#scope)
     - [Contracts](#contracts)
     - [Additional Context](#additional-context)
@@ -93,26 +92,26 @@ The deployment script of the protocol, located in `test/proposals/gips/GIP_0.sol
 
 | Contract | SLOC | Sepolia Deployment | Purpose |
 | --- | --- | --- | --- |
-| `core/Core.sol` | 40 | [CORE](https://sepolia.etherscan.io/address/0x5864658b6b6316e5e0643ad77e449960ee128b04#code) | Core is referenced by all contracts and manages access control |
-| `core/CoreRef.sol` | 59 | n/a | Core reference abstract contract inherited by all contracts |
-| `core/CoreRoles.sol` | 28 | n/a | List of Core roles |
-| `governance/GuildGovernor.sol` | 127 | [DAO_GOVERNOR_GUILD](https://sepolia.etherscan.io/address/0x6ec182c9630ce9b254621cdfa3bdde7cb90a9b67#code) | Governor for DAO votes (based on OZ) |
-| `governance/GuildTimelockController.sol`| 27 | [DAO_TIMELOCK](https://sepolia.etherscan.io/address/0x3bddf2b83245f8806d31f9e753c578c254531cc1#code), [ONBOARD_TIMELOCK](https://sepolia.etherscan.io/address/0x8f360bd4db5a37296a63a83e9517d77d94b0907e#code) | Timelock for DAO votes (based on OZ) |
-| `governance/LendingTermOffboarding.sol` | 130 | [OFFBOARD_GOVERNOR_GUILD](https://sepolia.etherscan.io/address/0xda70ad8ae77a98cc0064df63a8421acc128432ac#code) | Mini-governor that manages offboarding of lending terms, with fast execution |
-| `governance/LendingTermOnboarding.sol`  | 196 | [ONBOARD_GOVERNOR_GUILD](https://sepolia.etherscan.io/address/0x27f428bb83f33ea33a22ed3cd015f61362f641da#code) | Special-purpose governor that managed onboarding of lending terms, also acts as a lending term factory |
-| `governance/ProfitManager.sol` | 325 | [PROFIT_MANAGER](https://sepolia.etherscan.io/address/0xd8c5748984d27af2b1fc8235848b16c326e1f6de#code) | Central accounting place of the protocol where all lending terms report profit & losses. Handles distribution of profits |
-| `governance/GuildVetoGovernor.sol` | 231 | [DAO_VETO_GUILD](https://sepolia.etherscan.io/address/0x56ca5ffbe81672d9b2f1a406b4cb3c7d636e24d0#code), [DAO_VETO_CREDIT](https://sepolia.etherscan.io/address/0xde1c8b9bdf44ded73456e1b976251423a0534bb6#code), [ONBOARD_VETO_GUILD](https://sepolia.etherscan.io/address/0x68213c815ec33e127023da0ed0a7009d017a3ec3#code), [ONBOARD_VETO_CREDIT](https://sepolia.etherscan.io/address/0x93049dbd623b4a1d8dcea928751cce4b1eeb2d3a#code) | Veto Governor where DAO votes to cancel an action queued in a timelock can be created |
-| `tokens/ERC20Gauges.sol` | 294 | n/a | Gauge staking system inherited by `GUILD` token used to determine the relative debt ceilings of lending terms |
-| `tokens/ERC20MultiVotes.sol` | 302 | n/a | ERC20 vote token that allows delegation to multiple addresses. Inherited by both `GUILD` and credit tokens |
-| `tokens/ERC20RebaseDistributor.sol` | 499 | n/a | Rebasing ERC20 abstract class inherited by credit tokens, used to distribute value to lenders |
-| `tokens/CreditToken.sol` | 108 | [ERC20_GUSDC](https://sepolia.etherscan.io/address/0x33b79f707c137ad8b70fa27d63847254cf4cf80f#code) | ERC20 token representing credit (debt) in the system. Holders of credit tokens are lenders to the protocol |
-| `tokens/GuildToken.sol` | 196 | [ERC20_GUILD](https://sepolia.etherscan.io/address/0xcc65d0feaa7568b70453c26648e8a7bbef7248b4#code) | Governance token of the ECG. Non-transferrable at launch |
-| `loan/AuctionHouse.sol` | 141 | [AUCTION_HOUSE](https://sepolia.etherscan.io/address/0x723fc745cc58122f6c297a12324fa3245ce920b7#code) | Dutch auction system used in liquidations |
-| `loan/LendingTerm.sol` | 563 | [LENDING_TERM_V1](https://sepolia.etherscan.io/address/0x253df16fe3e2070ec5d1a6dd50c1a3fe3c349c7f#code), [TERM_SDAI_1](https://sepolia.etherscan.io/address/0xfbe67752bc63686707966b8ace817094d26f5381#code), [TERM_WBTC_1](https://sepolia.etherscan.io/address/0x3c34b8d9c4680e6870f1c5311f4631217a505974#code) | Manages lending (borrow, repay...). One implementation, several proxy clones listed as gauges |
-| `loan/SimplePSM.sol` | 99 | [PSM_USDC](https://sepolia.etherscan.io/address/0x66839a9a16beba26af1c717e9c1d604dff9d91f7#code) | Used to maintain peg between credit tokens and a reference asset |
-| `loan/SurplusGuildMinter.sol` | 222  | [SURPLUS_GUILD_MINTER](https://sepolia.etherscan.io/address/0x3b5b95249b0a598a4347be4c2736ad4eb877b16d#code) | Used to provide first-loss capital in credit tokens to borrow `GUILD` and participate in the gauge system without exposure to `GUILD` token price |
-| `rate-limits/RateLimitedMinter.sol` | 36 | [RATE_LIMITED_GUILD_MINTER](https://sepolia.etherscan.io/address/0xa29b96371dec4edaac637ee721c16046ee0b7dff#code), [RATE_LIMITED_CREDIT_MINTER](https://sepolia.etherscan.io/address/0xc8197e8b9ffe1039761f56c41c6ce9cbc7c2d1d9#code) | Implements limitations on `GUILD` and credit tokens minting |
-| `utils/RateLimitedV2.sol` | 98 | n/a | Abstract class util for rate limits |
+| [`core/Core.sol`](https://github.com/code-423n4/2023-12-ethereumcreditguild/blob/main/src/core/Core.sol) | 40 | [CORE](https://sepolia.etherscan.io/address/0x5864658b6b6316e5e0643ad77e449960ee128b04#code) | Core is referenced by all contracts and manages access control |
+| [`core/CoreRef.sol`](https://github.com/code-423n4/2023-12-ethereumcreditguild/blob/main/src/core/CoreRef.sol) | 59 | n/a | Core reference abstract contract inherited by all contracts |
+| [`core/CoreRoles.sol`](https://github.com/code-423n4/2023-12-ethereumcreditguild/blob/main/src/core/CoreRoles.sol) | 28 | n/a | List of Core roles |
+| [`governance/GuildGovernor.sol`](https://github.com/code-423n4/2023-12-ethereumcreditguild/blob/main/src/governance/GuildGovernor.sol) | 127 | [DAO_GOVERNOR_GUILD](https://sepolia.etherscan.io/address/0x6ec182c9630ce9b254621cdfa3bdde7cb90a9b67#code) | Governor for DAO votes (based on OZ) |
+| [`governance/GuildTimelockController.sol`](https://github.com/code-423n4/2023-12-ethereumcreditguild/blob/main/src/governance/GuildTimelockController.sol| 27 | [DAO_TIMELOCK](https://sepolia.etherscan.io/address/0x3bddf2b83245f8806d31f9e753c578c254531cc1#code), [ONBOARD_TIMELOCK](https://sepolia.etherscan.io/address/0x8f360bd4db5a37296a63a83e9517d77d94b0907e#code) | Timelock for DAO votes (based on OZ) |
+| [`governance/LendingTermOffboarding.sol`](https://github.com/code-423n4/2023-12-ethereumcreditguild/blob/main/src/governance/LendingTermOffboarding.sol) | 130 | [OFFBOARD_GOVERNOR_GUILD](https://sepolia.etherscan.io/address/0xda70ad8ae77a98cc0064df63a8421acc128432ac#code) | Mini-governor that manages offboarding of lending terms, with fast execution |
+| [`governance/LendingTermOnboarding.sol`](https://github.com/code-423n4/2023-12-ethereumcreditguild/blob/main/src/governance/LendingTermOnboarding.sol)  | 196 | [ONBOARD_GOVERNOR_GUILD](https://sepolia.etherscan.io/address/0x27f428bb83f33ea33a22ed3cd015f61362f641da#code) | Special-purpose governor that managed onboarding of lending terms, also acts as a lending term factory |
+| [`governance/ProfitManager.sol`](https://github.com/code-423n4/2023-12-ethereumcreditguild/blob/main/src/governance/ProfitManager.sol) | 325 | [PROFIT_MANAGER](https://sepolia.etherscan.io/address/0xd8c5748984d27af2b1fc8235848b16c326e1f6de#code) | Central accounting place of the protocol where all lending terms report profit & losses. Handles distribution of profits |
+| [`governance/GuildVetoGovernor.sol`](https://github.com/code-423n4/2023-12-ethereumcreditguild/blob/main/src/governance/GuildVetoGovernor.sol) | 231 | [DAO_VETO_GUILD](https://sepolia.etherscan.io/address/0x56ca5ffbe81672d9b2f1a406b4cb3c7d636e24d0#code), [DAO_VETO_CREDIT](https://sepolia.etherscan.io/address/0xde1c8b9bdf44ded73456e1b976251423a0534bb6#code), [ONBOARD_VETO_GUILD](https://sepolia.etherscan.io/address/0x68213c815ec33e127023da0ed0a7009d017a3ec3#code), [ONBOARD_VETO_CREDIT](https://sepolia.etherscan.io/address/0x93049dbd623b4a1d8dcea928751cce4b1eeb2d3a#code) | Veto Governor where DAO votes to cancel an action queued in a timelock can be created |
+| [`tokens/ERC20Gauges.sol`](https://github.com/code-423n4/2023-12-ethereumcreditguild/blob/main/src/tokens/ERC20Gauges.sol) | 294 | n/a | Gauge staking system inherited by `GUILD` token used to determine the relative debt ceilings of lending terms |
+| [`tokens/ERC20MultiVotes.sol`](https://github.com/code-423n4/2023-12-ethereumcreditguild/blob/main/src/tokens/ERC20MultiVotes.sol) | 302 | n/a | ERC20 vote token that allows delegation to multiple addresses. Inherited by both `GUILD` and credit tokens |
+| [`tokens/ERC20RebaseDistributor.sol`](https://github.com/code-423n4/2023-12-ethereumcreditguild/blob/main/src/tokens/ERC20RebaseDistributor.sol) | 499 | n/a | Rebasing ERC20 abstract class inherited by credit tokens, used to distribute value to lenders |
+| [`tokens/CreditToken.sol`](https://github.com/code-423n4/2023-12-ethereumcreditguild/blob/main/src/tokens/CreditToken.sol) | 108 | [ERC20_GUSDC](https://sepolia.etherscan.io/address/0x33b79f707c137ad8b70fa27d63847254cf4cf80f#code) | ERC20 token representing credit (debt) in the system. Holders of credit tokens are lenders to the protocol |
+| [`tokens/GuildToken.sol`](https://github.com/code-423n4/2023-12-ethereumcreditguild/blob/main/src/tokens/GuildToken.sol) | 196 | [ERC20_GUILD](https://sepolia.etherscan.io/address/0xcc65d0feaa7568b70453c26648e8a7bbef7248b4#code) | Governance token of the ECG. Non-transferrable at launch |
+| [`loan/AuctionHouse.sol`](https://github.com/code-423n4/2023-12-ethereumcreditguild/blob/main/src/loan/AuctionHouse.sol) | 141 | [AUCTION_HOUSE](https://sepolia.etherscan.io/address/0x723fc745cc58122f6c297a12324fa3245ce920b7#code) | Dutch auction system used in liquidations |
+| [`loan/LendingTerm.sol`](https://github.com/code-423n4/2023-12-ethereumcreditguild/blob/main/src/loan/LendingTerm.sol) | 563 | [LENDING_TERM_V1](https://sepolia.etherscan.io/address/0x253df16fe3e2070ec5d1a6dd50c1a3fe3c349c7f#code), [TERM_SDAI_1](https://sepolia.etherscan.io/address/0xfbe67752bc63686707966b8ace817094d26f5381#code), [TERM_WBTC_1](https://sepolia.etherscan.io/address/0x3c34b8d9c4680e6870f1c5311f4631217a505974#code) | Manages lending (borrow, repay...). One implementation, several proxy clones listed as gauges |
+| [`loan/SimplePSM.sol`](https://github.com/code-423n4/2023-12-ethereumcreditguild/blob/main/src/loan/SimplePSM.sol) | 99 | [PSM_USDC](https://sepolia.etherscan.io/address/0x66839a9a16beba26af1c717e9c1d604dff9d91f7#code) | Used to maintain peg between credit tokens and a reference asset |
+| [`loan/SurplusGuildMinter.sol`](https://github.com/code-423n4/2023-12-ethereumcreditguild/blob/main/src/loan/SurplusGuildMinter.sol) | 222  | [SURPLUS_GUILD_MINTER](https://sepolia.etherscan.io/address/0x3b5b95249b0a598a4347be4c2736ad4eb877b16d#code) | Used to provide first-loss capital in credit tokens to borrow `GUILD` and participate in the gauge system without exposure to `GUILD` token price |
+| [`rate-limits/RateLimitedMinter.sol`](https://github.com/code-423n4/2023-12-ethereumcreditguild/blob/main/src/rate-limits/RateLimitedMinter.sol) | 36 | [RATE_LIMITED_GUILD_MINTER](https://sepolia.etherscan.io/address/0xa29b96371dec4edaac637ee721c16046ee0b7dff#code), [RATE_LIMITED_CREDIT_MINTER](https://sepolia.etherscan.io/address/0xc8197e8b9ffe1039761f56c41c6ce9cbc7c2d1d9#code) | Implements limitations on `GUILD` and credit tokens minting |
+| [`utils/RateLimitedV2.sol`](https://github.com/code-423n4/2023-12-ethereumcreditguild/blob/main/src/utils/RateLimitedV2.sol) | 98 | n/a | Abstract class util for rate limits |
 
 Total SLOC: 3739
 
@@ -306,25 +305,3 @@ The first market for USDC will be launched under a guarded beta with a low debt 
 During the guarded beta, governance will retain emergency powers intended to respond against any unintended system behavior or vulnerability. After the beta period, governance powers will be burnt and no further arbitrary code changes possible. Instead, the system is build around explicitly defined processes such as the onboarding and offboarding of lending terms, or adjusting system parameters such as the surplus buffer fee. 
 
 We recognize that setting loan terms is a more specialized activity than saving, or choosing which yield bearing asset to hold. The protocol attempts to strike a balance through an optimistic governance model, where a relatively small quorum of `GUILD` is empowered to take system actions, but this is also vetoable. This means that outsiders have a reasonably low hurdle to making their voice heard (ie, getting just one or two major delegates to support their proposal) while large stakeholders can ensure malicious proposals do not pass. In the event of sufficient disagreement, the system should bias towards safety and stasis, and disgruntled parties who wish for change can exit. Forking is not just expected, but encouraged.
-
-## Scoping Details 
-
-```
-- If you have a public code repo, please share it here:  
-- How many contracts are in scope?: 21   
-- Total SLoC for these contracts?: 3800  
-- How many external imports are there?: 20  
-- How many separate interfaces and struct definitions are there for the contracts within scope?: 10  
-- Does most of your code generally use composition or inheritance?: Inheritance   
-- How many external calls?: 2   
-- What is the overall line coverage percentage provided by your tests?: 99%
-- Is this an upgrade of an existing system?: False
-- Check all that apply (e.g. timelock, NFT, AMM, ERC20, rollups, etc.): Timelock function, ERC-20 Token
-- Is there a need to understand a separate part of the codebase / get context in order to audit this part of the protocol?: False   
-- Please describe required context:   
-- Does it use an oracle?: No
-- Describe any novel or unique curve logic or mathematical models your code uses: No complex math, but there is a gauge system and a dutch auction mechanism for liquidations 
-- Is this either a fork of or an alternate implementation of another project?: False  
-- Does it use a side-chain?:
-- Describe any specific areas you would like addressed:
-```
